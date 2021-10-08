@@ -74,10 +74,19 @@ class ChatUser {
 
   handleMessage(jsonData) {
     let msg = JSON.parse(jsonData);
+    console.log("this.name from handleMssage:", this.name)
 
+    
     if (msg.type === "join") this.handleJoin(msg.name);
+    else if (msg.type === "get-joke") this.handleJoke();
     else if (msg.type === "chat") this.handleChat(msg.text);
     else throw new Error(`bad message: ${msg.type}`);
+  }
+
+  handleJoke() {
+    console.log("We reached handleJoke of userchat class")
+    const joke = {name: this.name, type: "get-joke", text: "Elie and Joel"};
+    this.send(JSON.stringify(joke));
   }
 
   /** Connection was closed: leave room, announce exit to others. */
