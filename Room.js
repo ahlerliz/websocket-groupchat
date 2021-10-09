@@ -1,5 +1,7 @@
 "use strict";
 
+const { map } = require("./app");
+
 /** Chat rooms that can be joined/left/broadcast to. */
 
 // in-memory storage of roomNames -> room
@@ -61,6 +63,15 @@ class Room {
    *
    * @param data {string} message to send
    * */
+
+  /** Get members in room */
+  get_members() {
+    const roomMembers = []
+    for (let member of this.members) {
+      roomMembers.push(member.name);
+    }
+    return roomMembers.join(", ");
+  }
 
   broadcast(data) {
     for (let member of this.members) {

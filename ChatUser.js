@@ -79,18 +79,24 @@ class ChatUser {
     
     if (msg.type === "join") this.handleJoin(msg.name);
     else if (msg.type === "get-joke") this.handleJoke();
+    else if (msg.type === "get-members") this.handleGetMembers();
     else if (msg.type === "chat") this.handleChat(msg.text);
     else throw new Error(`bad message: ${msg.type}`);
   }
 
   handleJoke() {
-    console.log("We reached handleJoke of userchat class")
+    // console.log("We reached handleJoke of userchat class")
     const joke = {name: this.name, type: "get-joke", text: "Elie and Joel"};
     this.send(JSON.stringify(joke));
   }
 
-  /** Connection was closed: leave room, announce exit to others. */
+  handleGetMembers() {
+    const members = this.room.get_members();
+    const memberList = {name: this.name, type: "get-members", text: members}
+    this.send(JSON.stringify(memberList));
+  }
 
+  /** Connection was closed: leave room, announce exit to others. */
   handleClose() {
     this.room.leave(this);
     this.room.broadcast({
